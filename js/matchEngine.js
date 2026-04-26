@@ -283,5 +283,15 @@ export const MatchEngine = {
     }
 
     return parts.join(' ');
-  }
+  },
+
+  /**
+   * Score an arbitrary list of candidates (e.g. imported ones)
+   * Returns all candidates sorted by match score
+   */
+  scoreCandidateList(candidateList, parsedJD) {
+    const scored = candidateList.map(c => this.scoreCandidate(c, parsedJD));
+    scored.sort((a, b) => b.matchScore - a.matchScore);
+    return scored;
+  },
 };

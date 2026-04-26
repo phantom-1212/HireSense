@@ -137,8 +137,25 @@ Required Skills:
       <div class="analysis-actions">
         <button class="btn btn-ghost" id="btn-back-to-input">← Edit JD</button>
         <button class="btn btn-primary btn-lg" id="btn-discover">
-          🔍 Discover Candidates
+          🔍 Discover from Talent Pool
         </button>
+      </div>
+
+      <!-- Import Section -->
+      <div class="import-section" style="max-width:var(--container-max);margin:var(--sp-8) auto 0;padding:var(--sp-6);background:var(--bg-raised);border:1px dashed var(--border-strong);border-radius:var(--r-xl);text-align:center;position:relative;transition:all var(--dur-base)">
+        <input type="file" id="import-file-input" accept=".json,.csv" style="display:none">
+        <div style="margin-bottom:var(--sp-3)">
+          <span style="font-size:1.6rem">📂</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:0.95rem;font-weight:600;color:var(--text-70);margin-bottom:var(--sp-2)">Or import your own candidates</div>
+        <div style="font-size:0.8rem;color:var(--text-30);margin-bottom:var(--sp-4);max-width:480px;margin-left:auto;margin-right:auto">
+          Upload a JSON or CSV file with candidate profiles. They'll be evaluated against this JD using the same scoring engine.
+        </div>
+        <div class="flex gap-3 justify-center flex-wrap">
+          <button class="btn btn-secondary" id="btn-import-file">📁 Upload File</button>
+          <button class="btn btn-ghost text-xs" id="btn-download-template">📋 Download Template</button>
+        </div>
+        <div id="import-status" style="margin-top:var(--sp-4);font-size:0.8rem;color:var(--text-50);display:none"></div>
       </div>
     </div>
   </section>

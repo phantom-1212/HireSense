@@ -123,6 +123,200 @@ function renderJDAnalysis() {
     startDiscovery();
     navigateTo('discovery');
   };
+
+  // ── Import Candidates ──────────────────────────────────────
+  const importInput = document.getElementById('import-file-input');
+  const importStatus = document.getElementById('import-status');
+
+  document.getElementById('btn-import-file').onclick = () => importInput.click();
+
+  document.getElementById('btn-download-template').onclick = () => {
+    downloadTemplate();
+  };
+
+  importInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    importStatus.style.display = 'block';
+    importStatus.innerHTML = `<span class="spinner" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:8px"></span> Reading ${file.name}...`;
+
+    try {
+      const text = await file.text();
+      let candidates;
+
+      if (file.name.endsWith('.json')) {
+        candidates = JSON.parse(text);
+        if (!Array.isArray(candidates)) candidates = [candidates];
+      } else if (file.name.endsWith('.csv')) {
+        candidates = parseCSVCandidates(text);
+      } else {
+        throw new Error('Unsupported file type. Use .json or .csv');
+      }
+
+      // Normalize and validate
+      const normalized = candidates.map((c, i) => normalizeCandidateData(c, i));
+      const valid = normalized.filter(c => c.name && c.skills.length > 0);
+
+      if (valid.length === 0) {
+        throw new Error('No valid candidates found. Ensure each has at least a name and skills.');
+      }
+
+      importStatus.innerHTML = `<span style="color:var(--mint)">✓</span> Parsed <strong>${valid.length}</strong> candidates from ${file.name}. Evaluating...`;
+
+      await Utils.sleep(500);
+
+      // Run through match engine with imported candidates
+      startDiscoveryWithCandidates(valid);
+      navigateTo('discovery');
+
+      importStatus.innerHTML = `<span style="color:var(--mint)">✓</span> ${valid.length} candidates imported and scored!`;
+    } catch (err) {
+      importStatus.innerHTML = `<span style="color:var(--coral)">✗</span> Error: ${err.message}`;
+    }
+
+    // Reset file input so same file can be re-imported
+    importInput.value = '';
+  });
+}
+
+/* ── Import Helpers ──────────────────────────────────────────── */
+function parseCSVCandidates(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) throw new Error('CSV must have a header row and at least one data row.');
+
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''));
+  const candidates = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCSVLine(lines[i]);
+    if (values.length < 2) continue;
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = (values[idx] || '').trim(); });
+    candidates.push(obj);
+  }
+  return candidates;
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  for (const char of line) {
+    if (char === '"') { inQuotes = !inQuotes; }
+    else if (char === ',' && !inQuotes) { result.push(current); current = ''; }
+    else { current += char; }
+  }
+  result.push(current);
+  return result;
+}
+
+function normalizeCandidateData(raw, index) {
+  // Accept flexible field names
+  const get = (...keys) => {
+    for (const k of keys) {
+      const val = raw[k] || raw[k.toLowerCase()] || raw[k.replace(/([A-Z])/g, '_$1').toLowerCase()];
+      if (val !== undefined && val !== '') return val;
+    }
+    return null;
+  };
+
+  const skills = get('skills') || '';
+  const skillsArray = Array.isArray(skills) ? skills : skills.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+
+  const domains = get('domains', 'domain', 'industry') || '';
+  const domainsArray = Array.isArray(domains) ? domains : domains.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+
+  return {
+    id: 1000 + index,
+    name: get('name', 'fullname', 'full_name', 'candidate_name') || `Candidate ${index + 1}`,
+    currentRole: get('currentRole', 'current_role', 'role', 'title', 'jobtitle', 'job_title', 'position') || 'Unknown Role',
+    company: get('company', 'current_company', 'employer', 'organization') || 'Unknown',
+    skills: skillsArray,
+    experience: parseInt(get('experience', 'years', 'yoe', 'years_experience', 'exp')) || 3,
+    education: {
+      degree: get('education_degree', 'degree', 'education', 'qualification') || 'B.Tech',
+      field: get('education_field', 'field', 'major', 'specialization') || 'Computer Science',
+      institution: get('education_institution', 'institution', 'university', 'college') || 'University',
+    },
+    domains: domainsArray.length > 0 ? domainsArray : ['Technology'],
+    location: get('location', 'city') || 'Remote',
+    remote: get('remote', 'work_mode', 'workmode') || 'hybrid',
+    salaryRange: [
+      parseInt(get('salaryMin', 'salary_min', 'min_salary', 'salary_from')) || 10,
+      parseInt(get('salaryMax', 'salary_max', 'max_salary', 'salary_to')) || 30,
+    ],
+    personality: {
+      enthusiasm: parseFloat(get('enthusiasm')) || (0.4 + Math.random() * 0.4),
+      openness: parseFloat(get('openness')) || (0.4 + Math.random() * 0.4),
+      directness: parseFloat(get('directness')) || (0.4 + Math.random() * 0.4),
+    },
+    availability: get('availability', 'notice_period') || 'one-month',
+    bio: get('bio', 'summary', 'about', 'description') || `Experienced professional with ${skillsArray.slice(0, 3).join(', ')} expertise.`,
+    _imported: true,
+  };
+}
+
+function downloadTemplate() {
+  const csv = `name,currentRole,company,skills,experience,degree,field,institution,location,remote,domains,salaryMin,salaryMax,availability,bio
+"Priya Sharma","Frontend Engineer","Acme Corp","React,TypeScript,Next.js,CSS,Tailwind",4,"B.Tech","Computer Science","IIT Delhi","Bangalore","hybrid","Fintech,SaaS",20,35,"two-week","Passionate frontend dev with focus on design systems"
+"Rahul Verma","Backend Developer","Tech Solutions","Node.js,Python,PostgreSQL,Docker,AWS",6,"M.Tech","Software Engineering","NIT Trichy","Mumbai","remote","Enterprise,Cloud",25,40,"one-month","Experienced backend engineer specializing in microservices"`;
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'hiresense_candidate_template.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  Utils.showToast('Template downloaded!', '📋');
+}
+
+async function startDiscoveryWithCandidates(importedCandidates) {
+  const grid = document.getElementById('discovery-grid');
+  const statusText = document.getElementById('discovery-status-text');
+  const insightsEl = document.getElementById('discovery-insights');
+
+  grid.innerHTML = '';
+  insightsEl.innerHTML = '';
+  statusText.textContent = `Evaluating ${importedCandidates.length} imported candidates...`;
+  document.getElementById('discovery-spinner').classList.remove('hidden');
+
+  await Utils.sleep(600);
+
+  // Score imported candidates using the match engine
+  State.matchResults = MatchEngine.scoreCandidateList(importedCandidates, State.parsedJD);
+
+  statusText.textContent = `Evaluated ${State.matchResults.length} imported candidates`;
+  document.getElementById('discovery-spinner').classList.add('hidden');
+
+  // Insights
+  const avgMatch = Math.round(State.matchResults.reduce((s, r) => s + r.matchScore, 0) / State.matchResults.length);
+  const topScore = State.matchResults[0]?.matchScore || 0;
+  insightsEl.innerHTML = `
+    <div class="insight-card">
+      <div class="insight-icon primary">📂</div>
+      <div><div class="insight-title">Imported</div><div class="insight-value">${State.matchResults.length}</div></div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon accent">📊</div>
+      <div><div class="insight-title">Avg Match Score</div><div class="insight-value">${avgMatch}</div></div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon warm">🏆</div>
+      <div><div class="insight-title">Top Score</div><div class="insight-value">${topScore}</div></div>
+    </div>
+  `;
+
+  for (let i = 0; i < State.matchResults.length; i++) {
+    await Utils.sleep(120);
+    grid.appendChild(createCandidateCard(State.matchResults[i]));
+  }
+
+  document.getElementById('btn-outreach').onclick = () => {
+    startOutreach();
+    navigateTo('outreach');
+  };
 }
 
 /* ══════════════════════════════════════════════════════════════
