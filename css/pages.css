@@ -17,12 +17,24 @@
   color: var(--text-100); letter-spacing: -0.01em;
 }
 .top-nav .logo-icon {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, var(--iris), #7C4DFF);
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, rgba(91,95,239,0.15), rgba(0,212,255,0.1));
   border-radius: var(--r-md);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 0 16px var(--iris-glow);
+  box-shadow: 0 0 20px var(--iris-glow);
+  position: relative;
+  overflow: visible;
+  padding: 4px;
+}
+.top-nav .logo-icon svg {
+  width: 100%; height: 100%;
+}
+.logo-node {
+  animation: nodePulse 2.5s ease-in-out infinite;
+}
+@keyframes nodePulse {
+  0%, 100% { opacity: 0.6; r: attr(r); }
+  50% { opacity: 1; }
 }
 
 /* ── VIEW 1: JD Input ─────────────────────────────────────────── */
