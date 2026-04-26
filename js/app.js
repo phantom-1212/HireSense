@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Main App Controller
+   HireSense — Main App Controller
    SPA router, state management, view rendering
    ═══════════════════════════════════════════════════════════════ */
 

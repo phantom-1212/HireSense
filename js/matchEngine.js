@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Match Engine
+   HireSense — Match Engine
    Multi-factor candidate scoring with explainability
    ═══════════════════════════════════════════════════════════════ */
 

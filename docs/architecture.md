@@ -1,4 +1,4 @@
-# TalentLens — Architecture & Scoring Logic
+# HireSense — Architecture & Scoring Logic
 
 ## System Architecture
 

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Conversation Engine
+   HireSense — Conversation Engine
    Simulated multi-turn conversational outreach with candidates
    ═══════════════════════════════════════════════════════════════ */
 
@@ -7,8 +7,8 @@ import { Utils } from './utils.js';
 
 /* ── Conversation Templates ───────────────────────────────────── */
 const AGENT_GREETINGS = [
-  "Hi {name}! I'm Alex from TalentLens. I came across your profile and was really impressed by your work at {company}. We have an exciting opportunity I'd love to discuss — are you open to a quick chat?",
-  "Hello {name}! I'm a talent scout at TalentLens. Your experience as a {role} at {company} caught our attention. We're working with a team that's looking for someone with exactly your skillset. Mind if I share some details?",
+  "Hi {name}! I'm Alex from HireSense. I came across your profile and was really impressed by your work at {company}. We have an exciting opportunity I'd love to discuss — are you open to a quick chat?",
+  "Hello {name}! I'm a talent scout at HireSense. Your experience as a {role} at {company} caught our attention. We're working with a team that's looking for someone with exactly your skillset. Mind if I share some details?",
   "Hey {name}! Hope you're doing well. I'm reaching out because we have a role that seems like a great fit for your background. Given your {exp} years in the field, I think you'd be a strong match. Can I tell you more?",
 ];
 

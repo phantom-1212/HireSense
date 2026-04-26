@@ -1,4 +1,4 @@
-# 🔍 TalentLens — AI-Powered Talent Scouting & Engagement Agent
+# 🔍 HireSense — AI-Powered Talent Scouting & Engagement Agent
 
 > An intelligent, end-to-end talent discovery platform that parses job descriptions, discovers matching candidates from a simulated talent pool, engages them through AI-driven conversational outreach, and produces a dual-scored ranked shortlist that recruiters can act on immediately.
 
@@ -8,7 +8,7 @@
 
 **Problem:** Recruiters spend hours manually sifting through candidate profiles, trying to gauge both technical fit and genuine interest. There's no unified system that handles discovery, evaluation, and engagement in one flow.
 
-**Solution:** TalentLens is an AI agent that automates the entire scouting pipeline:
+**Solution:** HireSense is an AI agent that automates the entire scouting pipeline:
 
 1. **Parses** a raw Job Description into structured requirements
 2. **Discovers** the best-matching candidates from a talent pool using multi-factor scoring
@@ -159,7 +159,7 @@ Each candidate gets a generated recruiter insight paragraph explaining why they 
 ## 📂 File Structure
 
 ```
-TalentLens/                         Total: ~170KB, 16 files, 0 dependencies
+HireSense/                         Total: ~170KB, 16 files, 0 dependencies
 │
 ├── index.html                      Main SPA — 5 views, stepper nav, modal
 │
@@ -196,7 +196,7 @@ TalentLens/                         Total: ~170KB, 16 files, 0 dependencies
 
 ### Option 1: Local Dev Server (Recommended)
 ```bash
-cd TalentLens
+cd HireSense
 npx -y serve .
 ```
 Open **http://localhost:3000**

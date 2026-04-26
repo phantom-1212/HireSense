@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — JD Parser Engine
+   HireSense — JD Parser Engine
    Parses raw JD text into structured requirements
    ═══════════════════════════════════════════════════════════════ */
 

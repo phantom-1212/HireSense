@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Ranking Engine
+   HireSense — Ranking Engine
    Dual-score fusion & final ranked shortlist
    ═══════════════════════════════════════════════════════════════ */
 

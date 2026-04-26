@@ -1,4 +1,4 @@
-# TalentLens — Sample Inputs & Outputs
+# HireSense — Sample Inputs & Outputs
 
 ## Sample Input: Senior React Developer JD
 
@@ -58,7 +58,7 @@ Salary: 30-45 LPA
 ## Sample Conversation (Aarav Mehta — High Interest)
 
 ```
-🤖 Agent: Hi Aarav! I'm Alex from TalentLens. I came across your profile 
+🤖 Agent: Hi Aarav! I'm Alex from HireSense. I came across your profile 
    and was really impressed by your work at Razorpay. We have an exciting 
    opportunity I'd love to discuss — are you open to a quick chat?
 

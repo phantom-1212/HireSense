@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Charts / Data Visualization
+   HireSense — Charts / Data Visualization
    Custom canvas-based radar charts, bar charts, and gauges
    ═══════════════════════════════════════════════════════════════ */
 

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Utility Functions
+   HireSense — Utility Functions
    Helpers for animation, formatting, export, and DOM
    ═══════════════════════════════════════════════════════════════ */
 
@@ -156,12 +156,12 @@ export const Utils = {
   },
 
   /* ── Export Functions ────────────────────────────────────── */
-  exportJSON(data, filename = 'talentlens-shortlist.json') {
+  exportJSON(data, filename = 'HireSense-shortlist.json') {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     this._downloadBlob(blob, filename);
   },
 
-  exportCSV(data, filename = 'talentlens-shortlist.csv') {
+  exportCSV(data, filename = 'HireSense-shortlist.csv') {
     if (!data.length) return;
     const headers = Object.keys(data[0]);
     const csvRows = [

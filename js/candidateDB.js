@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   TalentLens — Candidate Database
+   HireSense — Candidate Database
    50+ simulated candidate profiles
    ═══════════════════════════════════════════════════════════════ */
 
