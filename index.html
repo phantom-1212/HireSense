@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TalentLens — AI-Powered Talent Scouting & Engagement Agent. Parse job descriptions, discover matching candidates, and generate ranked shortlists.">
+  <title>TalentLens — AI Talent Scout</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236c5ce7'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18'>🔍</text></svg>">
+</head>
+<body>
+
+  <!-- ═══ Top Navigation ═══ -->
+  <nav class="top-nav" id="top-nav">
+    <div class="logo">
+      <div class="logo-icon">🔍</div>
+      <span>Talent<span class="text-gradient">Lens</span></span>
+    </div>
+    <div class="stepper" id="stepper">
+      <div class="stepper-step active" data-view="jd-input">
+        <span class="step-num">1</span>
+        <span class="step-label">JD Input</span>
+      </div>
+      <div class="stepper-divider"></div>
+      <div class="stepper-step" data-view="jd-analysis">
+        <span class="step-num">2</span>
+        <span class="step-label">Analysis</span>
+      </div>
+      <div class="stepper-divider"></div>
+      <div class="stepper-step" data-view="discovery">
+        <span class="step-num">3</span>
+        <span class="step-label">Discovery</span>
+      </div>
+      <div class="stepper-divider"></div>
+      <div class="stepper-step" data-view="outreach">
+        <span class="step-num">4</span>
+        <span class="step-label">Outreach</span>
+      </div>
+      <div class="stepper-divider"></div>
+      <div class="stepper-step" data-view="shortlist">
+        <span class="step-num">5</span>
+        <span class="step-label">Shortlist</span>
+      </div>
+    </div>
+    <div style="width:120px"></div>
+  </nav>
+
+  <!-- ═══ VIEW 1: JD Input ═══ -->
+  <section class="view active" id="view-jd-input">
+    <div class="view-jd-input">
+      <div class="hero-section">
+        <h1 class="animate-hero-title">
+          AI-Powered <span class="text-gradient">Talent Scout</span>
+        </h1>
+        <p class="subtitle animate-hero-subtitle">
+          Paste a job description and let our AI discover, engage, and rank the best candidates — scored on match fit and genuine interest.
+        </p>
+      </div>
+
+      <div class="jd-input-area animate-hero-input">
+        <div class="input-header">
+          <label class="input-label" for="jd-textarea">📋 Paste Job Description</label>
+          <span class="char-count text-mono" id="char-count">0 chars</span>
+        </div>
+        <textarea
+          class="jd-textarea"
+          id="jd-textarea"
+          placeholder="Paste the full job description here...
+
+Example: Senior Frontend Engineer — React
+Company: TechCorp Solutions
+Location: Bangalore (Hybrid)
+
+We're looking for a Senior Frontend Engineer...
+
+Required Skills:
+- React, TypeScript, Next.js
+- 5+ years of experience
+..."
+        ></textarea>
+
+        <div class="jd-actions">
+          <button class="btn btn-primary btn-lg" id="btn-analyze" disabled>
+            🚀 Analyze & Find Talent
+          </button>
+        </div>
+
+        <div class="sample-jds-section">
+          <div class="section-label">⚡ Try a sample JD</div>
+          <div class="sample-chips" id="sample-chips"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VIEW 2: JD Analysis ═══ -->
+  <section class="view" id="view-jd-analysis">
+    <div class="view-jd-analysis">
+      <div class="analysis-header">
+        <h2>📋 JD Analysis</h2>
+        <p class="text-muted">Here's what we extracted from the job description</p>
+      </div>
+
+      <div class="analysis-grid stagger-in" id="analysis-grid">
+        <!-- Dynamically populated -->
+      </div>
+
+      <div class="analysis-actions">
+        <button class="btn btn-ghost" id="btn-back-to-input">← Edit JD</button>
+        <button class="btn btn-primary btn-lg" id="btn-discover">
+          🔍 Discover Candidates
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VIEW 3: Candidate Discovery ═══ -->
+  <section class="view" id="view-discovery">
+    <div class="view-discovery">
+      <div class="discovery-header">
+        <h2>🎯 Candidate Discovery</h2>
+        <p class="text-muted">Scanning our talent pool for the best matches</p>
+        <div class="discovery-status" id="discovery-status">
+          <div class="spinner" id="discovery-spinner"></div>
+          <span id="discovery-status-text">Initializing...</span>
+        </div>
+      </div>
+
+      <div class="discovery-insights" id="discovery-insights"></div>
+
+      <div class="discovery-grid stagger-in" id="discovery-grid">
+        <!-- Dynamically populated -->
+      </div>
+
+      <div class="discovery-actions">
+        <button class="btn btn-ghost" id="btn-back-to-analysis">← Back to Analysis</button>
+        <button class="btn btn-primary btn-lg" id="btn-outreach">
+          💬 Start Outreach
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VIEW 4: Conversational Outreach ═══ -->
+  <section class="view" id="view-outreach">
+    <div class="view-outreach">
+      <div class="outreach-header">
+        <h2>💬 Conversational Outreach</h2>
+        <p class="text-muted">AI-simulated engagement to assess candidate interest</p>
+      </div>
+
+      <div class="outreach-layout">
+        <!-- Sidebar: Candidate List -->
+        <div class="outreach-sidebar glass-panel-static" id="outreach-sidebar" style="padding:var(--space-4);border-radius:var(--radius-lg)">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Chat Panel -->
+        <div class="outreach-chat-panel glass-panel-static">
+          <div class="chat-header">
+            <div class="chat-header-left" id="chat-header-info">
+              <div class="text-muted text-sm">Select a candidate to view conversation</div>
+            </div>
+            <div id="chat-interest-badge"></div>
+          </div>
+          <div class="chat-body" id="chat-body">
+            <div class="empty-state">
+              <div class="empty-icon">💬</div>
+              <div class="empty-title">No Conversation Selected</div>
+              <div class="empty-desc">Click a candidate from the sidebar to view their AI-simulated outreach conversation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="outreach-actions">
+        <button class="btn btn-ghost" id="btn-back-to-discovery">← Back to Discovery</button>
+        <button class="btn btn-accent btn-lg" id="btn-shortlist">
+          📊 View Ranked Shortlist
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VIEW 5: Ranked Shortlist ═══ -->
+  <section class="view" id="view-shortlist">
+    <div class="view-shortlist">
+      <div class="shortlist-header">
+        <h2>🏆 Ranked Shortlist</h2>
+        <p class="text-muted">Final candidates scored on Match + Interest with configurable weights</p>
+      </div>
+
+      <div class="shortlist-summary stagger-in" id="shortlist-summary"></div>
+
+      <div class="shortlist-controls glass-panel-static">
+        <div class="weight-controls">
+          <div class="weight-control">
+            <label>🎯 Match Weight</label>
+            <input type="range" class="weight-slider" id="match-weight-slider" min="10" max="90" value="60">
+            <span class="weight-label" id="match-weight-label">60%</span>
+          </div>
+          <div class="weight-control">
+            <label>💬 Interest Weight</label>
+            <input type="range" class="weight-slider" id="interest-weight-slider" min="10" max="90" value="40" disabled>
+            <span class="weight-label" id="interest-weight-label">40%</span>
+          </div>
+        </div>
+        <div class="export-buttons">
+          <button class="btn btn-secondary btn-sm" id="btn-export-json">📄 Export JSON</button>
+          <button class="btn btn-secondary btn-sm" id="btn-export-csv">📊 Export CSV</button>
+        </div>
+      </div>
+
+      <div class="shortlist-table-container glass-panel-static" style="border-radius:var(--radius-lg);overflow:hidden">
+        <table class="data-table" id="shortlist-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tier</th>
+              <th>Candidate</th>
+              <th>Match</th>
+              <th>Interest</th>
+              <th>Combined</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="shortlist-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Modal Overlay ═══ -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content" id="modal-content">
+      <!-- Dynamically populated -->
+    </div>
+  </div>
+
+  <!-- ═══ App Script ═══ -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
